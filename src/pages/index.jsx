@@ -1,10 +1,12 @@
-import Dashboard from './dashboard/index'
+import Layout from './dashboard/layout'
 import Login from './login'
 
 export default function Home() {
-  return (
-    <>
-      <Login />
-    </>
-  )
+    return (
+        <>
+            <Login>
+                <Layout />
+            </Login>
+        </>
+    )
 }

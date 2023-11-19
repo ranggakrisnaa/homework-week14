@@ -16,11 +16,7 @@ export default async function handler(req, res) {
             }
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
             res.status(200).json({ token });
-            res.cookies.set({
-                name: "token",
-                value: token,
-                path: "/",
-            });
+
         } catch (error) {
             console.log(error);
             res.status(400).json({ message: "User already exists" });

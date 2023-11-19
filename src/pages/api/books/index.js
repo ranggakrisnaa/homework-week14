@@ -1,5 +1,4 @@
 import prisma from "../../../../config/db";
-import middleware from "../middleware";
 
 async function handler(req, res) {
     if (req.method === "GET") {
@@ -12,6 +11,24 @@ async function handler(req, res) {
             res.status(200).json({ data })
         } catch (error) {
             console.log(error);
+        }
+    } else if (req.method === "POST") {
+        const { title, author, publisher, year, pages } = req.body;
+        try {
+            const book = await prisma.book.create({
+                data: {
+                    title,
+                    author,
+                    publisher,
+                    year: parseInt(year),
+                    pages: parseInt(pages),
+                    // image: req.file.path,
+                },
+            });
+            res.status(201).json({ book });
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({ message: "Book already exists" });
         }
     }
 }

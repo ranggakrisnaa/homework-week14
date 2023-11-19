@@ -1,4 +1,4 @@
-const prisma = require("../../../../config/db");
+import prisma from "../../../../config/db";
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {

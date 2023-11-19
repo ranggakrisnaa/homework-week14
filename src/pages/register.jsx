@@ -3,22 +3,22 @@ import React, { useState } from 'react'
 import picture from '../../public/image1.png'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { loginUser } from '../lib/user'
+import { registerUser } from '../lib/user'
 import Link from 'next/link'
 
-const Login = () => {
+const Register = () => {
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
-    console.log(email);
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
-            const res = await loginUser(email, password)
-            localStorage.setItem('token', res.token)
-            alert('success login')
-            router.push('/dashboard')
+            const res = await registerUser(name, email, password)
+            alert('success register')
+            router.push('/')
         } catch (error) {
             console.log(error);
         }
@@ -28,11 +28,15 @@ const Login = () => {
             <Flex align={"center"} justify={"center"} h={"100vh"}>
                 <Box border={"solid"} padding={"20px"} w={"500px"} rounded={"6"}>
                     <Flex align={"center"} justify={"center"} flexDir={"column"}>
-                        <Image src={picture} width={90} priority={true} alt='books' />
+                        <Image src={picture} width={90} alt='books' />
                         <Text mt={"5px"} fontSize={"22px"} align={"center"} fontWeight={"bold"}>Welcome to BooksVerseHub</Text>
                     </Flex>
-                    <Text fontSize={"22px"} mt={"10px"} align={"center"} fontWeight={"bold"}>Sign In to your account</Text>
+                    <Text fontSize={"22px"} mt={"10px"} align={"center"} fontWeight={"bold"}>Register to your account</Text>
                     <FormControl mt={"20px"}>
+                        <Box>
+                            <FormLabel>Name</FormLabel>
+                            <Input type='name' name='name' id='name' onChange={(e) => setName(e.target.value)} />
+                        </Box>
                         <Box>
                             <FormLabel>Email address</FormLabel>
                             <Input type='email' name='email' id='email' onChange={(e) => setEmail(e.target.value)} />
@@ -43,7 +47,7 @@ const Login = () => {
                         </Box>
                         <Flex mt={"10px"} justify={"space-between"}>
                             <Checkbox defaultChecked>Remember me</Checkbox>
-                            <Text><Link href={`/register`}>register an account?</Link></Text>
+                            <Text><Link href={`/`}>sign in?</Link></Text>
                         </Flex>
                         <Box mt={"20px"}>
                             <Button w={"full"} colorScheme='blue' onClick={handleSubmit}>sign in</Button>
@@ -57,4 +61,4 @@ const Login = () => {
 
 
 
-export default Login
+export default Register
