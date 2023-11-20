@@ -1,3 +1,3 @@
 export default function handler(req, res) {
-    res.status(401).json({ message: 'Not authenticated.' });
+    res.status(401).json({ message: 'Unauthenticated User' });
 };

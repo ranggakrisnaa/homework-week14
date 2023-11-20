@@ -1,16 +1,22 @@
 import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { createBook } from 'src/lib/book'
 
 const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
+    const [selectedFile, setSelectedFile] = useState(null);
     const titleRef = useRef()
     const authorRef = useRef()
     const publisherRef = useRef()
     const yearRef = useRef()
     const pageRef = useRef()
-    const imageRef = useRef()
     const router = useRouter()
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    console.log(selectedFile);
 
     const handleSubmit = async () => {
         let bookData = {
@@ -19,7 +25,7 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
             publisher: publisherRef.current.value,
             year: yearRef.current.value,
             pages: pageRef.current.value,
-            image: imageRef.current.value
+            image: selectedFile
         }
 
         const token = localStorage.getItem("token")
@@ -77,7 +83,7 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>image</FormLabel>
-                        <Input type='file' ref={imageRef} placeholder='Last name' />
+                        <Input type='file' name='file' onChange={handleFileChange} placeholder='Last name' />
                     </FormControl>
                 </ModalBody>
 

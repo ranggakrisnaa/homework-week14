@@ -14,6 +14,7 @@ export default async function handler(req, res) {
                 },
             });
             res.status(201).json({ user });
+
         } catch (error) {
             console.log(error);
             res.status(400).json({ message: "User already exists" });

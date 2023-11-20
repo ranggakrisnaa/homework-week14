@@ -26,12 +26,12 @@ const Register = () => {
     return (
         <Box width={"100vw"}>
             <Flex align={"center"} justify={"center"} h={"100vh"}>
-                <Box border={"solid"} padding={"20px"} w={"500px"} rounded={"6"}>
+                <Box border={"solid"} padding={"20px"} w={"600px"} rounded={"6"}>
                     <Flex align={"center"} justify={"center"} flexDir={"column"}>
                         <Image src={picture} width={90} alt='books' />
-                        <Text mt={"5px"} fontSize={"22px"} align={"center"} fontWeight={"bold"}>Welcome to BooksVerseHub</Text>
+                        <Text mt={"5px"} fontSize={"32px"} align={"center"} fontWeight={"bold"}>Welcome to BooksVerseHub</Text>
                     </Flex>
-                    <Text fontSize={"22px"} mt={"10px"} align={"center"} fontWeight={"bold"}>Register to your account</Text>
+                    <Text fontSize={"28px"} mt={"10px"} align={"center"} fontWeight={"bold"}>Register to your account</Text>
                     <FormControl mt={"20px"}>
                         <Box>
                             <FormLabel>Name</FormLabel>
@@ -47,7 +47,7 @@ const Register = () => {
                         </Box>
                         <Flex mt={"10px"} justify={"space-between"}>
                             <Checkbox defaultChecked>Remember me</Checkbox>
-                            <Text><Link href={`/`}>sign in?</Link></Text>
+                            <Text><Link href={`/login`}>Sign In?</Link></Text>
                         </Flex>
                         <Box mt={"20px"}>
                             <Button w={"full"} colorScheme='blue' onClick={handleSubmit}>sign in</Button>

@@ -4,6 +4,7 @@ import picture from '../../public/image1.png'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { loginUser } from '../lib/user'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 
 const Login = () => {
@@ -18,7 +19,8 @@ const Login = () => {
         try {
             const res = await loginUser(email, password)
             // localStorage.setItem('token', res.token)
-            Cookies.set('token', res.token, { expires: 7 }) && localStorage.setItem('token', res.token)
+            const oneDay = 24 * 60 * 60 * 1000
+            cookies().set('token', res.token, { expires: Date.now() - oneDay }) && localStorage.setItem('token', res.token)
 
             alert('success login')
             router.push('/')
