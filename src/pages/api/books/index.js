@@ -1,15 +1,14 @@
 import prisma from "../../../../config/db";
 import upload from "../multer";
 
+
 export const config = {
     api: {
-        bodyParser: false
-    }
+        bodyParser: false,
+    },
 }
 
-const Multer = upload.single('file');
-
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method === "GET") {
         try {
             const data = await prisma.book.findMany()
@@ -22,15 +21,17 @@ async function handler(req, res) {
             console.log(error);
         }
     } else if (req.method === "POST") {
-        Multer(req, res, async (err) => {
+        upload.single('file')(req, res, async (err) => {
             if (err) {
                 console.error('Error uploading file:', err);
                 return res.status(500).send(err.message);
             }
-            const filePath = req.file.path;
-            const filename = filePath.replace(/^public\//, '/');
+            const filePath = req.file ? req.file.filename : '';
+            console.log(filePath);
+            const url = `http://localhost:3000/${filePath}`;
 
-            const { title, author, publisher, year, pages } = req.body;
+            const { title, author, publisher, year, pages } = req.body
+            console.log(title);
             try {
                 const book = await prisma.book.create({
                     data: {
@@ -39,7 +40,7 @@ async function handler(req, res) {
                         publisher,
                         year: parseInt(year),
                         pages: parseInt(pages),
-                        image: filename,
+                        image: url
                     },
                 });
                 res.status(201).json({ message: "Book Created Successfully", book });
@@ -51,5 +52,3 @@ async function handler(req, res) {
     }
 
 }
-
-export default handler

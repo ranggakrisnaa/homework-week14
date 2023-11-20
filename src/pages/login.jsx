@@ -2,24 +2,23 @@ import { Box, Button, Checkbox, Flex, FormControl, FormHelperText, FormLabel, In
 import React, { useState } from 'react'
 import picture from '../../public/image1.png'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { setCookie } from 'cookies-next';
 import { loginUser } from '../lib/user'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
-    console.log(email);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
             const res = await loginUser(email, password)
-            // localStorage.setItem('token', res.token)
-            Cookies.set('token', res.token, { expires: 7 }) && localStorage.setItem('token', res.token)
-
+            setCookie('token', res.token)
+            localStorage.setItem('token', res.token)
             alert('success login')
             router.push('/')
         } catch (error) {

@@ -1,9 +1,11 @@
 import prisma from "../../../../config/db";
 
-async function handler(req, res) {
+
+export default async function handler(req, res) {
     if (req.method === "PUT") {
         const { id } = req.query
         const { title, author, publisher, year, pages, image } = req.body
+
         try {
             const book = await prisma.book.update({
                 where: { id: Number(id) },
@@ -51,5 +53,3 @@ async function handler(req, res) {
     }
 
 }
-
-export default handler

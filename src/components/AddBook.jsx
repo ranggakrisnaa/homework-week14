@@ -1,4 +1,5 @@
 import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 import { createBook } from 'src/lib/book'
@@ -25,10 +26,9 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
             publisher: publisherRef.current.value,
             year: yearRef.current.value,
             pages: pageRef.current.value,
-            image: selectedFile
         }
 
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("token") || getCookie("token")
 
         if (token) {
             bookData = {
@@ -37,13 +37,12 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
             }
         }
 
-        console.log(bookData);
-
+        const formData = new FormData()
         try {
-            await createBook(bookData)
-
+            const res = await createBook(bookData, formData)
+            setSelectedFile("")
             alert("book created successfully");
-            router.reload("/dashboard")
+            router.reload("/")
             onClose()
         } catch (error) {
             console.log(error)

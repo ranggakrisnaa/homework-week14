@@ -1,13 +1,14 @@
+import { setCookie } from "cookies-next";
+
 export const loginUser = async (email, password) => {
     try {
-        const res = await fetch('/api/users/login', {
+        const res = await fetch('http://localhost:3000/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
         });
-        console.log(res);
 
 
         if (res.ok) {
@@ -22,7 +23,7 @@ export const loginUser = async (email, password) => {
 
 export const registerUser = async (name, email, password) => {
     try {
-        const res = await fetch('/api/users/register', {
+        const res = await fetch('http://localhost:3000/api/users/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

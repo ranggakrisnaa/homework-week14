@@ -4,6 +4,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import { useEffect, useRef, useState } from "react"
 import AddBook from "./AddBook"
 import { useRouter } from "next/router"
+import { deleteCookie } from "cookies-next"
 
 const Navbar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -20,7 +21,7 @@ const Navbar = () => {
     }, [])
 
     const logOut = () => {
-        setIsLogin(localStorage.removeItem("token"))
+        setIsLogin(localStorage.removeItem("token") && deleteCookie('token'))
         router.push("/")
     }
 
