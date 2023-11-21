@@ -103,7 +103,7 @@ export default function DetailBook({ data }) {
                 </Box>
                 <Box>
                     <Text mb={"6px"}>{data.author}</Text>
-                    <Text>{data.title}</Text>
+                    <Text fontSize={'28px'}>{data.title}</Text>
                     <Tabs>
                         <TabList mt={"13px"}>
                             <Tab>Description</Tab>
