@@ -31,7 +31,9 @@ export default async function handler(req, res) {
             const url = `http://localhost:3000/${filePath}`;
 
             const { title, author, publisher, year, pages } = req.body
-            console.log(title);
+            if (!title || !author || !publisher || !year || !pages) {
+                return res.status(400).json({ message: "Value Field is Null" })
+            }
             try {
                 const book = await prisma.book.create({
                     data: {

@@ -13,7 +13,7 @@ export default async function handler(req, res) {
                     password: hashedPassword,
                 },
             });
-            res.status(201).json({ user });
+            res.status(201).json({ message: "You have Register Successfully", user });
 
         } catch (error) {
             console.log(error);

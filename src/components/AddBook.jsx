@@ -1,11 +1,12 @@
-import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react'
 import { getCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
-import { createBook } from 'src/lib/book'
+import { createBook, updateBook } from 'src/lib/book'
 
-const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
+const AddBook = ({ initialRef, finalRef, isOpen, onClose, edit, title, author, publisher, year, pages, image, id }) => {
     const [selectedFile, setSelectedFile] = useState(null);
+    const toast = useToast()
     const titleRef = useRef()
     const authorRef = useRef()
     const publisherRef = useRef()
@@ -17,7 +18,6 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
         setSelectedFile(e.target.files[0]);
     };
 
-    console.log(selectedFile);
 
     const handleSubmit = async () => {
         let bookData = {
@@ -28,7 +28,7 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
             pages: pageRef.current.value,
         }
 
-        const token = localStorage.getItem("token") || getCookie("token")
+        const token = getCookie("token")
 
         if (token) {
             bookData = {
@@ -38,14 +38,61 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
         }
 
         const formData = new FormData()
-        try {
-            const res = await createBook(bookData, formData)
-            setSelectedFile("")
-            alert("book created successfully");
-            router.reload("/")
-            onClose()
-        } catch (error) {
-            console.log(error)
+        formData.append('file', selectedFile)
+
+
+        if (edit) {
+            try {
+                const updatedBookData = { ...bookData }
+                const res = await updateBook(id, updatedBookData, formData)
+                router.reload()
+                onClose()
+                toast({
+                    title: 'Book updated',
+                    position: 'top',
+                    description: res.message,
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            } catch (error) {
+                console.log(error)
+                const errorMessage = error.response ? error.response.data.message : 'Something went wrong'
+                toast({
+                    title: 'Error',
+                    position: 'top',
+                    description: errorMessage,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            }
+        } else {
+            try {
+                const res = await createBook(bookData, formData)
+                setSelectedFile("")
+                toast({
+                    title: 'Book created',
+                    position: 'top',
+                    description: res.message,
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+                router.reload("/")
+                onClose()
+            } catch (error) {
+                console.log(error);
+                const errorMessage = error.response ? error.response.data.message : 'Something went wrong'
+                toast({
+                    title: 'Error',
+                    position: 'top',
+                    description: errorMessage,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            }
         }
     }
     return (
@@ -57,32 +104,32 @@ const AddBook = ({ initialRef, finalRef, isOpen, onClose }) => {
         >
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Create your books</ModalHeader>
+                <ModalHeader>{edit ? 'Edit your books' : 'Create your books'}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <FormControl>
                         <FormLabel>title</FormLabel>
-                        <Input ref={titleRef} placeholder='First name' />
+                        <Input ref={titleRef} placeholder='title' defaultValue={title} required />
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>author</FormLabel>
-                        <Input ref={authorRef} placeholder='Last name' />
+                        <Input ref={authorRef} placeholder='author' defaultValue={author} required />
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>publiser</FormLabel>
-                        <Input ref={publisherRef} placeholder='Last name' />
+                        <Input ref={publisherRef} placeholder='publisher' defaultValue={publisher} required />
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>year</FormLabel>
-                        <Input type='number' ref={yearRef} placeholder='Last name' />
+                        <Input type='number' ref={yearRef} placeholder='year' defaultValue={year} required />
                     </FormControl>
                     <FormControl mt={4}>
-                        <FormLabel>page</FormLabel>
-                        <Input type='number' ref={pageRef} placeholder='Last name' />
+                        <FormLabel>pages</FormLabel>
+                        <Input type='number' ref={pageRef} placeholder='pages' defaultValue={pages} required />
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>image</FormLabel>
-                        <Input type='file' name='file' onChange={handleFileChange} placeholder='Last name' />
+                        <Input type='file' name='file' onChange={handleFileChange} placeholder='image' required />
                     </FormControl>
                 </ModalBody>
 

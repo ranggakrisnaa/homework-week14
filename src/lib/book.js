@@ -38,7 +38,6 @@ export const createBook = async ({
     publisher,
     year,
     pages,
-    image,
     token,
 }, formData) => {
     try {
@@ -47,7 +46,6 @@ export const createBook = async ({
         formData.append('publisher', publisher);
         formData.append('year', year);
         formData.append('pages', pages);
-        formData.append('file', image);
 
         const res = await fetch("http://localhost:3000/api/books", {
             method: "POST",
@@ -65,3 +63,52 @@ export const createBook = async ({
         console.log(error);
     }
 };
+
+export const updateBook = async (id, { title,
+    author,
+    publisher,
+    year,
+    pages,
+    token,
+}, formData) => {
+    try {
+        console.log(id);
+        formData.append('title', title);
+        formData.append('author', author);
+        formData.append('publisher', publisher);
+        formData.append('year', year);
+        formData.append('pages', pages);
+
+        const res = await fetch(`http://localhost:3000/api/books/${id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const deleteBook = async (token, id) => {
+    try {
+        const res = await fetch(`http://localhost:3000/api/books/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+} 

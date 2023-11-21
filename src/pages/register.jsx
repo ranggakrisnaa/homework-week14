@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, FormControl, FormHelperText, FormLabel, Input, Text } from '@chakra-ui/react'
+import { Box, Button, Checkbox, Flex, FormControl, FormHelperText, FormLabel, Input, Text, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import picture from '../../public/image1.png'
 import Image from 'next/image'
@@ -7,6 +7,7 @@ import { registerUser } from '../lib/user'
 import Link from 'next/link'
 
 const Register = () => {
+    const toast = useToast()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -17,10 +18,26 @@ const Register = () => {
 
         try {
             const res = await registerUser(name, email, password)
-            alert('success register')
-            router.push('/')
+            toast({
+                title: 'Register',
+                position: 'top',
+                description: res.message,
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+            })
+            router.push('/login')
         } catch (error) {
             console.log(error);
+            const errorMessage = error.response ? error.response.data.message : 'Something went wrong'
+            toast({
+                title: 'Error',
+                position: 'top',
+                description: errorMessage,
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+            })
         }
     }
     return (

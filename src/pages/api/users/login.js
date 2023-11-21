@@ -15,7 +15,7 @@ export default async function handler(req, res) {
                 return res.status(400).json({ message: "Invalid credentials" });
             }
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-            res.status(200).json({ token });
+            res.status(200).json({ message: "You have Login Successfully", token });
 
         } catch (error) {
             console.log(error);
