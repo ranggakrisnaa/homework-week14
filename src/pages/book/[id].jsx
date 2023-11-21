@@ -133,25 +133,25 @@ export default function DetailBook({ data }) {
                                     <Box>
                                         <Box>
                                             <Text fontSize={"13px"}>Title</Text>
-                                            <Text>{data?.title}</Text>
+                                            <Text fontSize={"26px"}>{data?.title}</Text>
                                         </Box>
                                         <Box mt={"10px"}>
                                             <Text fontSize={"13px"}>Author</Text>
-                                            <Text>{data?.author}</Text>
+                                            <Text fontSize={"26px"}>{data?.author}</Text>
                                         </Box>
                                         <Box mt={"10px"}>
                                             <Text fontSize={"13px"}>Year</Text>
-                                            <Text>{data?.year}</Text>
+                                            <Text fontSize={"26px"}>{data?.year}</Text>
                                         </Box>
                                     </Box>
                                     <Box>
                                         <Box>
                                             <Text fontSize={"13px"}>Publisher</Text>
-                                            <Text>{data?.publisher}</Text>
+                                            <Text fontSize={"26px"}>{data?.publisher}</Text>
                                         </Box>
                                         <Box mt={"10px"}>
                                             <Text fontSize={"13px"}>Pages</Text>
-                                            <Text>{data?.pages}</Text>
+                                            <Text fontSize={"26px"}>{data?.pages}</Text>
                                         </Box>
                                     </Box>
                                 </Flex>
